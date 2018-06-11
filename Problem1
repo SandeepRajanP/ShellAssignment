@@ -30,14 +30,19 @@ ssh -t -t $PRODIP ./gitpush.sh
 mv gitpush.sh SandeepRajanP
 cd ~SandeepRajanP
 
+mv gitpush.sh SandeepRajanP
+cd ~SandeepRajanP
+
 sudo yum update
 sudo yum install git
 
 git init
+git config user.name "SandeepRajanP"
+git config user.email "sandeeprajan.p@quantiphi.com" 
 git add Problem1
 git commit -m "Problem 1 Assignment"
-git remote add origin https://github.com/SandeepRajanP/ShellAssignment.git
-git push -u origin master
+git remote add repo https://github.com/SandeepRajanP/ShellAssignment.git
+git push -u repo master
 
 
 
