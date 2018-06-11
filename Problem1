@@ -1,0 +1,43 @@
+
+#Client Code File
+#!/bin/bash
+
+chmod 700 jumptoprod.sh
+chmod 700 gitpush.sh
+
+scp -i ~/shellscripting1.pem jumptoprod.sh ec2-user@ec2-18-221-144-26.us-east-2.compute.amazonaws.com:
+scp -i ~/shellscripting1.pem -r ~/SandeepRajanP ec2-user@ec2-18-221-144-26.us-east-2.compute.amazonaws.com:
+
+ssh -i ~/shellscripting1.pem ec2-user@ec2-18-221-144-26.us-east-2.compute.amazonaws.com ./jumptoprod.sh
+
+#Jump Code File
+#!/bin/bash
+
+
+cd ~
+mv jumptoprod.sh SandeepRajanP
+PRODID=`aws autoscaling describe-auto-scaling-groups --region us-east-2 --auto-scaling-group-names "shellscripting" --query "AutoScalingGroups[0].Instances[*].InstanceId" --output text`
+
+PRODIP=$(aws ec2 describe-instances --region us-east-2 --instance-ids $PRODID --query "Reservations[*].Instances[*].PrivateIpAddress" --output text)
+
+scp ~/SandeepRajanP/gitpush.sh ec2-user@$PRODIP:
+scp -r ~/SandeepRajanP ec2-user@$PRODIP:
+
+ssh -t -t $PRODIP ./gitpush.sh
+
+
+#Prod Code File
+mv gitpush.sh SandeepRajanP
+cd ~SandeepRajanP
+
+sudo yum update
+sudo yum install git
+
+git init
+git add Problem1
+git commit -m "Problem 1 Assignment"
+git remote add origin https://github.com/SandeepRajanP/ShellAssignment.git
+git push -u origin master
+
+
+
