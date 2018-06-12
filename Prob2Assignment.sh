@@ -13,6 +13,7 @@ do
     then
         break
     fi
+    aws s3 ls s3://buckettraining007/uploaded.txt 
 done
 
 aws ec2 run-instances --image-id ami-14c5486b --instance-type t2.micro --key-name shellscripting --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=SandeepDownloadS3Bucket},{Key=username,Value=SandeepRajanP},{Key=emailId,Value=sandeeprajan.p@quantiphi.com},{Key=Project,Value=PE_Training}]' --iam-instance-profile Arn=arn:aws:iam::488599217855:instance-profile/PE_trainee_Admin_role --user-data '#!/bin/bash
